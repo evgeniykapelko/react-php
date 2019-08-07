@@ -8,17 +8,12 @@ use Psr\Http\Message\ServerRequestInterface;
 
 $loop = React\EventLoop\Factory::create();
 $router = new Router();
+$router->load(__DIR__.'/routes.php');
 
 // создаем экземпляр сервера
 $server = new Server(
   function (ServerRequestInterface $request) use ($router) {
-    $router($request->getUri()->getPath());
-
-    return new Response(
-      200,
-      ['Content-Type' => 'text/plan; charset=UTF-8'],
-      "Привет, мир"
-    );
+    return $router($router->getUri()->get)
   });
 
   $socket = new React\Socket\Server(6068, $loop);
