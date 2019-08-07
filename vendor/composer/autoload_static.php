@@ -25,6 +25,7 @@ class ComposerStaticInitf88a62b80a217e0d7f5f5f483e3415b2
             'React\\Http\\' => 11,
             'React\\EventLoop\\' => 16,
             'React\\Dns\\' => 10,
+            'React\\ChildProcess\\' => 19,
             'React\\Cache\\' => 12,
         ),
         'P' => 
@@ -69,6 +70,10 @@ class ComposerStaticInitf88a62b80a217e0d7f5f5f483e3415b2
         'React\\Dns\\' => 
         array (
             0 => __DIR__ . '/..' . '/react/dns/src',
+        ),
+        'React\\ChildProcess\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/child-process/src',
         ),
         'React\\Cache\\' => 
         array (

@@ -2,26 +2,25 @@
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
+use React\EventLoop\LoopInterface;
 
 class Router {
   private $routes = [];
 
+private $loop;
+
+public function __construct(LoopInterface $loop)
+{
+  $this->loop = $loop;
+}
   public function __invoke(ServerRequestInterface $request)
   {
     $path = $request->getUri()->getPath();
 
-    if (!isset($this->routes[$path])) {
-      return new Response(
-        404,
-        ['Content-Type' => 'text/html; charset=UTF-8'],
-        "Нет обработчика запроса для $path"
-      );
-    }
-
     echo "Запрос: $path\n";
-    $handler = $this->routes[$path];
+    $handler = $this->routes[$path] ?? $this->notFound($path);
 
-    return $handler($request);
+    return $handler($request, $this->loop);
   }
 
   public function load($filename)
@@ -35,6 +34,17 @@ class Router {
   public function add($path, callable $handler)
   {
     $this->routes[$path] = $handler;
+  }
+
+  private function notFound($path)
+  {
+    return function () use ($path) {
+      return new Response(
+        404,
+        ['Content-Type' => 'text/html; charset=UTF-8'],
+        "Нет обработчика запроса для $path"
+      );
+    }
   }
 }
 
